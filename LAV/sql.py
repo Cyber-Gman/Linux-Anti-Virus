@@ -1,4 +1,4 @@
-# This code provides provides the the functions necessary with communicating with the mysql database
+# This code provides the the functions necessary with communicating with the mysql database
 # @author  TallPanda
 # @version 1.03 10th of January 2022
 # @platform   Python 3.10.1
