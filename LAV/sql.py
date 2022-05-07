@@ -22,7 +22,7 @@ def getdetails(config:str=None):# gets the details of from the login.json file
         user = details["user"]
         database = details["database"]
         port = details["port"]
-    id = f"{getpass.getuser()}_{uuid.getnode()}"
+    id = f"User_{uuid.getnode()}"
     return id,host,passw,user,database,port
 
 def sqlconcur(config:str=None):# returns the console and cursor object for the mysql package
