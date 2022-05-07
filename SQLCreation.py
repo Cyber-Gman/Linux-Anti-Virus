@@ -1,9 +1,10 @@
 import os.path
 from types import TracebackType
 import mysql.connector
-from LAV.sql import sqlconcur,makeusertable,makeuserdb
+from LAV.sql import sqlconcur,makeusertable,makeuserdb,getdetails
 def mainmenu():
     session,cur = sqlconcur()
+    id = getdetails()[0]
     with cur as cur:
         Dropdown = input("""
         What system do you want:
@@ -12,12 +13,9 @@ def mainmenu():
         3: Exit
         """)
         if Dropdown == "1":
-            try:
                 makeuserdb(cur)
-            except Exception as e:
-                print(e)
         elif Dropdown == "2":
-            makeusertable(cur,"systemhashes")
+            makeusertable(cur,id)
         elif Dropdown == "3":
             print("exiting")
             exit()

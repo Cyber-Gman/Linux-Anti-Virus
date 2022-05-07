@@ -22,7 +22,7 @@ def getdetails(config:str=None,database:str=None):# gets the details of from the
         user = details["user"]
         database = details["database"]
         port = details["port"]
-    id = f"User_{uuid.getnode()}"
+    id = f"systemhashes_{uuid.getnode()}"
     
     return id,host,passw,user,database,port
 
@@ -53,9 +53,9 @@ def sqlconcurnodb(config:str=None):
     try:
         con =connector.connect(host=host,user=user,password=passw,port=port)
         print(f"""
-Connected to {con.server_host} as User '{con.user}' on Port: {con.server_port}    
-Server Version: {con.get_server_info().replace('-0ubuntu0.',',Ubuntu-').strip(str.join(".",[str(_) for _ in con.get_server_version()])+"-").replace("-",":").split(",")}
-Connection ID: {con.connection_id}
+        Connected to {con.server_host} as User '{con.user}' on Port: {con.server_port}    
+        Server Version: {con.get_server_info().replace('-0ubuntu0.',',Ubuntu-').strip(str.join(".",[str(_) for _ in con.get_server_version()])+"-").replace("-",":").split(",")}
+        Connection ID: {con.connection_id}
         """)
         cur = con.cursor(buffered=True)
         return con,cur
@@ -95,50 +95,18 @@ def makeusertable(cur,id):# makes a table for the users data
                 print(f"Skipping table {id}")
 
 def makeuserdb(cur):# makes a db for the users data
-    cur.execute(f"CREATE DATABASE MasterHash;")
-    print(f"DB MasterHash created.")
-    # for message in cur:
-    #     print(message)
-
-# def elementexists(cur,id,key,element=None):# checks if MD5 already exists
-#     if element == None:
-#         element = "MD5"
-#     cur.execute(f"select * from {id} where {element}='{key}'")
-    # for message in cur:
-    #     if key in message:
-    #         return True
-#     return False
-
-# def uploadata(cur,id,userdata):# Uploads the MD5 hash along with the vt status 0 by default meaning not uploaded
-#     n = len(userdata.keys())
-#     i = 0
-#     with ProgressBar(max_value=n) as pb:
-#         for key,value in userdata.items():
-#             pb.update(i)
-#             value,fname = list(value)
-#             if not elementexists(cur,id,key):
-#                 cur.execute(f"insert into {id} (MD5, vtstatus, fname) values ('{key}',{value},'{fname}')")
-#             i+=1
-
-# def notfounds(cur,id,element=None):# retuns hashes not found in thedatabase
-#     if element == None:
-#         element = "MD5"
-#     cur.execute(f"select * from {id} where (not vtstatus=2 or not vtstatus=3) and {element} not in (select {element} from uniq);")
-#     nfs = {}
-#     try:
-#         for i in cur:
-#             key,value,fname =i
-#             nfs[key] = [value,fname]
-#         return nfs
-#     except:
-#         return nfs
-
-
-# def sql(userdata,config:str=None):
-#     id = getdetails(config)[0]
-#     con, cur = sqlconcur()
-#     with con as con:
-#         with cur as cur:
-#             makeusertable(cur,id)
-#             uploadata(cur,id,userdata)
-#             return(notfounds(cur,id))
+    try:
+        cur.execute(f"CREATE DATABASE MasterHash;")
+        print(f"DB MasterHash created.")
+    except Exception as e:
+        print(e)
+        
+def elementexists(cur, id, key, element=None):# checks if MD5 already exists
+    print("hi")
+    if element == None:
+        element = "MD5"
+    cur.execute(f"select * from {id} where {element}='{key}'")
+    for message in cur:
+        if key in message:
+            return True
+    return False

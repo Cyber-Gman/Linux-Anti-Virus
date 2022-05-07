@@ -7,7 +7,7 @@ from types import TracebackType
 import mysql.connector
 import ntpath
 import time
-from LAV.sql import sqlconcur
+from LAV.sql import sqlconcur,elementexists,getdetails
 from alive_progress import alive_bar
 
 session,cursor = sqlconcur()
@@ -47,6 +47,7 @@ import os
 def DBInput(fname):
     with alive_bar(9000, force_tty=True) as bar:
         for filename in fname:
+            id = getdetails()[0]
             try:
                 if os.path.isfile(filename):
                     time.sleep(0.02)
@@ -60,15 +61,20 @@ def DBInput(fname):
                         time.sleep(5)
                         basicname = ntpath.basename(filename)
                         time.sleep(5)
-                        cursor.execute(f"insert into virushash (FileName, MD5) values ('{basicname}', '{newmd5}')") 
+                        if not elementexists(cursor, id,newmd5):
+                            print("hi")
+                            cursor.execute(f"insert into virushash (FileName, MD5) values ('{basicname}', '{newmd5}')") 
                         time.sleep(5)
 
                     else:
                         try:
-                            cursor.execute(f"insert into systemhashes (FileName, MD5) values ('{filename}', '{newmd5}')") 
-                            session.commit()
-                            print("Files Added")
+                            if not elementexists(cursor, id,newmd5):
+                                print(f"select * from {id} where MD5='{newmd5}'")
+                                cursor.execute(f"insert into systemhashes (FileName, MD5) values ('{filename}', '{newmd5}')") 
+                                session.commit()
+                                print("Files Added")
                         except mysql.connector.Error as error:
+                            print(error)
                             print("Failed to insert into MySQL table {}".format(error))
             except Exception as e:
                 print(f"starting DBInput crash\n{e}\nfinishing DBInput crash")
