@@ -1,7 +1,7 @@
 import os.path
 from types import TracebackType
 import mysql.connector
-
+from LAV.sql import sqlconcur
 def mainmenu():
     Dropdown = input(print("""
     What system do you want:
@@ -14,15 +14,7 @@ def mainmenu():
         MakeTable()
 
 def MakeDB():
-    session = mysql.connector.connect(
-        host='127.0.0.1',
-        user='pythonuser',
-        port='3306',
-        password='PythonSQLPass',
-        
-    )
-    cursor = session.cursor()
-    db_cursor = session.cursor()
+    session,db_cursor = sqlconcur()
     db_cursor.execute("CREATE DATABASE MasterHash")
     for db in db_cursor:
         print(db)
