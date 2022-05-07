@@ -25,17 +25,22 @@ def hashinginput():
 
 
 def md5(fname1):
-    hash_md5 = hashlib.md5()
-    for fname in fname1:
-        try:
-            print(fname)
-            with open(fname, "rb") as f:
-                for chunk in iter(lambda: f.read(2 ** 20), b""):
-                    hash_md5.update(chunk)
-                    return hash_md5.hexdigest()
-        except Exception as E:
-            print("File Not accessable at this time moving on")
-            print(E)
+    try:
+        if os.path.isfile(fname1):
+            hash_md5 = hashlib.md5()
+            for fname in fname1:
+                try:
+                    print(fname)
+                    with open(fname, "rb") as f:
+                        for chunk in iter(lambda: f.read(2 ** 20), b""):
+                            hash_md5.update(chunk)
+                            return hash_md5.hexdigest()
+                except Exception as E:
+                    print("File Not accessable at this time moving on")
+                    print(E)
+    except exception as e:
+        print(f"starting md5 crash\n{e}\nending md5 crash fin")
+        exit()
 
 path = '/home/gman/AntiVirus Tool/test.txt'
 
@@ -73,7 +78,5 @@ def DBInput(fname):
                         except mysql.connector.Error as error:
                             print("Failed to insert into MySQL table {}".format(error))
             except exception as e:
-                print("start")
-                print(e)
-                print("fin")
+                print(f"starting DBInput crash\n{e}\nfinishing DBInput crash")
                 exit()
