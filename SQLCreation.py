@@ -1,40 +1,26 @@
 import os.path
 from types import TracebackType
 import mysql.connector
-from LAV.sql import sqlconcur
+from LAV.sql import sqlconcur,makeusertable,makeuserdb
 def mainmenu():
-    Dropdown = input(print("""
-    What system do you want:
-    1: Make a new DB
-    2: Make the Table to store hash files
-    """))
-    if Dropdown == 1:
-        MakeDB()
-    if Dropdown == 2:
-        MakeTable()
-
-def MakeDB():
-    session,db_cursor = sqlconcur()
-    db_cursor.execute("CREATE DATABASE MasterHash")
-    for db in db_cursor:
-        print(db)
-
-def MakeTable():
-    session = mysql.connector.connect(
-        host='127.0.0.1',
-        user='pythonuser',
-        port='3306',
-        database ='MasterHash',
-        password='PythonSQLPass',
-    )
-    cursor = session.cursor()
-    db_cursor = session.cursor()
-    try:
-        print("Trying to Make Table Now")
-        db_cursor.execute("CREATE TABLE systemhash (FileName VARCHAR(255), MD5 VARCHAR(255))")
-        for db in db_cursor:
-            print(db)
-    except mysql.connector.Error as error:
-        print("Failed to insert into MySQL table {}".format(error))
-
-mainmenu()
+    session,cur = sqlconcur()
+    with cur as cur:
+        Dropdown = input("""
+        What system do you want:
+        1: Make a new DB
+        2: Make the Table to store hash files
+        3: Exit
+        """)
+        if Dropdown == "1":
+            try:
+                makeuserdb(cur)
+            except Exception as e:
+                print(e)
+        elif Dropdown == "2":
+            makeusertable(cur,"systemhashes")
+        elif Dropdown == "3":
+            print("exiting")
+            exit()
+        mainmenu()
+if __name__ == "__main__":
+    mainmenu()

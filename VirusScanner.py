@@ -17,7 +17,7 @@ from os.path import isfile, join
 from types import TracebackType
 import HashingSystem
 import SQLSettings
-
+from LAV.sql import sqlconcur
 import mysql.connector
 
 from NoneMain.Hashfile import getmd5
@@ -64,14 +64,17 @@ def Hashingsystem():
     [2] Then use the following  This will scan the whole drive
     [3] Then hit enter and make sure everything runs
     """)
-    hashing101 = glob.iglob(input("Enter Drive Name:\n"), recursive=True)
+    dname = input("Enter Drive Name:\nOr leave blank for default\n")
+    if dname == "" or dname is None:
+        dname = "/*/*/*"
+    hashing101 = glob.iglob(dname, recursive=True)
     HashingSystem.md5(hashing101)
     HashingSystem.DBInput(hashing101)
 
 def databaselookup():
     MD5 = input("What hash are you looking to find:n\
         ")
-    cursor.execute("Select MD5 FROM systemhashs WHERE MD5=%s", (MD5,))
+    cursor.execute("Select MD5 FROM systemhashes WHERE MD5=%s", (MD5,))
     data = cursor.fetchall()
     if data:
         print("MD5 Found In DB")
