@@ -94,8 +94,10 @@ def uploadata(cur,id,userdata):# Uploads the sha1 hash along with the vt status 
                 cur.execute(f"insert into {id} (SHA1, vtstatus, fname) values ('{key}',{value},'{fname}')")
             i+=1
 
-def notfounds(cur,id):# retuns hashes not found in the benign file database
-    cur.execute(f"select * from {id} where (not vtstatus=2 or not vtstatus=3) and SHA1 not in (select SHA1 from uniq);")
+def notfounds(cur,id,element=None):# retuns hashes not found in thedatabase
+    if element == None:
+        element = "SHA1"
+    cur.execute(f"select * from {id} where (not vtstatus=2 or not vtstatus=3) and {element} not in (select {element} from uniq);")
     nfs = {}
     try:
         for i in cur:
