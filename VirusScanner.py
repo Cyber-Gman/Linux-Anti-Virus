@@ -23,14 +23,7 @@ import mysql.connector
 from NoneMain.Hashfile import getmd5
 
 utc = datetime.datetime.now().time()
-session = mysql.connector.connect(
-    host='192.168.10.1',
-    user='pythonuser',
-    database ='hashsystem',
-    port='3306',
-    password='PythonSQLPass',
-)
-cursor = session.cursor()
+session,cursor = sqlconcur()
 
 def mainmenu():
     print("This code was wrote by Cyber_Gman / Graham Gibney Student number B00119513 please do not abuse this system")
