@@ -7,17 +7,10 @@ from types import TracebackType
 import mysql.connector
 import ntpath
 import time
+from LAV.sql import sqlconcur
 from alive_progress import alive_bar
 
-
-session = mysql.connector.connect(
-    host='192.168.10.1',
-    user='pythonuser',
-    database ='hashsystem',
-    port='3306',
-    password='PythonSQLPass',
-)
-cursor = session.cursor()
+session,cursor = sqlconcur()
 
 
 def hashinginput():

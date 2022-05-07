@@ -1,0 +1,7 @@
+{
+    "host":"192.168.0.1",
+    "user":"database",
+    "password":"password",
+    "database":"NSRL",
+    "port":"3306"
+}
