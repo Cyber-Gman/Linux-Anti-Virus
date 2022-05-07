@@ -79,7 +79,7 @@ def tablexists(cur,table):# checks is table exists
 
 def makeusertable(cur,id):# makes a table for the users data
     if not tablexists(cur,id):
-        cur.execute(f"create Table {id}(MD5 VARCHAR(255) UNIQUE not null,FileName VARCHAR(255), primary key (MD5));")
+        cur.execute(f"create Table {id}(MD5 VARCHAR(255),FileName VARCHAR(255) UNIQUE not null, primary key (FileName));")
         print(f"Table {id} created.")
     else:
         inp = input(f"Table: {id} already exists\nDo you want to recreate the table?(Y/N)\n")
@@ -89,7 +89,7 @@ def makeusertable(cur,id):# makes a table for the users data
         match inp.lower():
             case "y":
                 cur.execute(f"drop Table {id};")
-                cur.execute(f"create Table {id}(MD5 VARCHAR(255) UNIQUE not null, vtstatus int not null default 0, fname  VARCHAR(255), primary key (MD5));")
+                cur.execute(f"create Table {id}(MD5 VARCHAR(255),FileName VARCHAR(255) UNIQUE not null, primary key (FileName));")
                 print(f"Table {id} created.")
             case "n":
                 print(f"Skipping table {id}")
@@ -106,7 +106,8 @@ def elementexists(cur, id, key, element=None):# checks if MD5 already exists
     if element == None:
         element = "MD5"
     cur.execute(f"select * from {id} where {element}='{key}'")
-    for message in cur:
+    tmp =enumerate(cur)
+    for message in tmp:
         if key in message:
             return True
     return False

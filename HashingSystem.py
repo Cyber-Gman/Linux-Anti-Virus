@@ -62,19 +62,16 @@ def DBInput(fname):
                         basicname = ntpath.basename(filename)
                         time.sleep(5)
                         if not elementexists(cursor, id,newmd5):
-                            print("hi")
-                            cursor.execute(f"insert into virushash (FileName, MD5) values ('{basicname}', '{newmd5}')") 
+                            cursor.execute(f"insert into {id} (FileName, MD5) values ('{basicname}', '{newmd5}')") 
                         time.sleep(5)
 
                     else:
                         try:
                             if not elementexists(cursor, id,newmd5):
-                                print(f"select * from {id} where MD5='{newmd5}'")
-                                cursor.execute(f"insert into systemhashes (FileName, MD5) values ('{filename}', '{newmd5}')") 
+                                cursor.execute(f"insert into {id} (FileName, MD5) values ('{filename}', '{newmd5}')") 
                                 session.commit()
                                 print("Files Added")
                         except mysql.connector.Error as error:
-                            print(error)
                             print("Failed to insert into MySQL table {}".format(error))
             except Exception as e:
                 print(f"starting DBInput crash\n{e}\nfinishing DBInput crash")
