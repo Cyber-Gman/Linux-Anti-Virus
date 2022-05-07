@@ -40,12 +40,11 @@ def sqlconcur(config:str=None):# returns the console and cursor object for the m
     except Exception as e:
         if "Can't connect to MySQL server on" in str(e):
             print(f"Connection Issues on {host}:{port}")
-            print("Retrying in 2 minutes")
+            print("Retrying in 2 minutes\nPlease contact the devloper if the issue cannot be resolved")
             time.sleep(120)
             return sqlconcur(config)
         else:
             print(e)
-            print("Retrying in 1 minutes")
             raise "Please contact the devloper if the issue cannot be resolved"
 
 
