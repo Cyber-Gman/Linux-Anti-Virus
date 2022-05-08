@@ -22,10 +22,17 @@ import mysql.connector
 
 from NoneMain.Hashfile import getmd5
 
-utc = datetime.datetime.now().time()
-session,cursor = sqlconcur()
+
+def clear():
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
 
 def mainmenu():
+    utc = datetime.datetime.now().time()
+    session,cursor = sqlconcur()
+    clear()
     print("This code was wrote by Cyber_Gman / Graham Gibney Student number B00119513 please do not abuse this system")
     print("----------------------------------------------------------------------------------------------------------")
     print("The Current Time is:")
@@ -42,19 +49,11 @@ def mainmenu():
         databaselookup()
     elif answer != " ":
         checkNull()
-
-def clear():
-    if name == 'nt':
-        _ = system('cls')
-    else:
-        _ = system('clear')
-
     
 def checkNull():
     print("Please enter a valid number from the list")
-    time.sleep(7)
+    time.sleep(2)
     clear()
-    time.sleep(5)
     mainmenu()
 
 def Hashingsystem():
@@ -64,12 +63,13 @@ def Hashingsystem():
     [2] Then use the following  This will scan the whole drive
     [3] Then hit enter and make sure everything runs
     """)
+    clear()
     dname = input("Enter Drive Name:\nOr leave blank for default\n")
     if dname == "" or dname is None:
-        dname = "/*/*/*"
+        dname = "/*/**/*"
     hashing101 = glob.iglob(dname, recursive=True)
-    HashingSystem.md5(hashing101)
-    HashingSystem.DBInput(hashing101)
+    # HashingSystem.md5(hashing101)
+    HashingSystem.DBInput(hashing101,clear)
 
 def databaselookup():
     MD5 = input("What hash are you looking to find:n\
@@ -80,4 +80,6 @@ def databaselookup():
         print("MD5 Found In DB")
     else:
         print("No MD5 Hash found")
-mainmenu()
+
+if __name__ == "__main__":
+    mainmenu()

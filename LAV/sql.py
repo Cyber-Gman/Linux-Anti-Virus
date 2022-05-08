@@ -102,12 +102,10 @@ def makeuserdb(cur):# makes a db for the users data
         print(e)
         
 def elementexists(cur, id, key, element=None):# checks if MD5 already exists
-    print("hi")
     if element == None:
-        element = "MD5"
+        element = "FileName"
     cur.execute(f"select * from {id} where {element}='{key}'")
-    tmp =enumerate(cur)
-    for message in tmp:
+    for message in cur:
         if key in message:
             return True
     return False
