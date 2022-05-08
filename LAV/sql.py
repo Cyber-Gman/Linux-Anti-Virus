@@ -86,13 +86,12 @@ def makeusertable(cur,id):# makes a table for the users data
         while not inp.lower() in ["y","n"]:
             inp = input(f"Table: {id} already exists\nDo you want to recreate the table?(Y/N)\n")
 
-        match inp.lower():
-            case "y":
-                cur.execute(f"drop Table {id};")
-                cur.execute(f"create Table {id}(MD5 VARCHAR(255),FileName VARCHAR(255) UNIQUE not null, primary key (FileName));")
-                print(f"Table {id} created.")
-            case "n":
-                print(f"Skipping table {id}")
+        if inp.lower() == "y":
+            cur.execute(f"drop Table {id};")
+            cur.execute(f"create Table {id}(MD5 VARCHAR(255),FileName VARCHAR(255) UNIQUE not null, primary key (FileName));")
+            print(f"Table {id} created.")
+        elif inp.lower() == "n":
+            print(f"Skipping table {id}")
 
 def makeuserdb(cur):# makes a db for the users data
     try:
